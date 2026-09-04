@@ -46,10 +46,14 @@ const browser = await puppeteer.launch({
   executablePath: chromePath(),
   args: ["--no-sandbox", "--force-color-profile=srgb", "--font-render-hinting=none"],
 });
+// Full page at every width: a variant is judged on the whole design, and
+// the hero is simply the top of a full-page shot. Viewport-only tablet and
+// mobile shots hid everything below the fold at exactly the widths where
+// layouts break.
 const sizes = [
   ["desktop", 1440, 900, true],
-  ["tablet", 834, 1112, false],
-  ["mobile", 390, 844, false],
+  ["tablet", 834, 1112, true],
+  ["mobile", 390, 844, true],
 ];
 for (const [label, width, height, full] of sizes) {
   const page = await browser.newPage();
