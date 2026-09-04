@@ -23,7 +23,11 @@ export const POLICY_SECTIONS: { title: string; body: string }[] = [
   },
   {
     title: "No account required",
-    body: `The app uses a random, anonymous device key (stored in your iPhone's Keychain) to prevent abuse and enforce fair-use limits. It is not connected to your name, email, or phone number. Our server keeps a record of the device (the key, your iPhone's vendor identifier, and the date and risk level of each check, never its content) so limits work across launches. To have that device record deleted, email ${CONTACT_EMAIL}.`,
+    body: `The app uses a random, anonymous device key (stored in your iPhone's Keychain) to prevent abuse and enforce fair-use limits. On its own it is not connected to your name, email, or phone number. Our server keeps a record of the device (the key, your iPhone's vendor identifier, and the date and risk level of each check, never its content) so limits work across launches. To have that device record deleted, email ${CONTACT_EMAIL}.`,
+  },
+  {
+    title: "If you choose to sign in",
+    body: `Signing in is optional and everything works without it. If you do sign in with Apple or Google, our sign-in provider Clerk handles it and gives us your first name and the email address for the account. We show them in Account and use the name to greet you. This iPhone's device record is then linked to that account, so your checks and Deep Dives stay yours. Sign in with Apple can hide your real address behind a private relay if you prefer. You can delete the account from Account then Delete Account, which removes the account and its data and returns this iPhone to anonymous; your saved history on the iPhone is untouched.`,
   },
   {
     title: "Diagnostics",
