@@ -985,9 +985,8 @@ const PROMISES: [string, string][] = [
 
 const NUMS: [string, string][] = [
   ["10", "free checks a day"],
-  ["0", "accounts required"],
-  ["0", "ads or data sold"],
-  ["100%", "of saved checks on your iPhone"],
+  ["No ads", "and nothing sold"],
+  ["Saved", "only on your iPhone"],
 ];
 
 function Privacy() {
