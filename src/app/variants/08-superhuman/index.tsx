@@ -543,7 +543,7 @@ function Privacy() {
             {[
               ["You approve every send", "Checking runs on our server and Google's Gemini, for that one check. Our server does not keep the content afterwards."],
               ["History stays on the phone", "Saved results live on your iPhone, protected by iOS. Delete one, or delete all of them."],
-              ["No account, no tracking", "Nothing to sign up for. An anonymous device key is all that prevents abuse. No ads. Nothing sold."],
+              ["No account required", "Signing in with Apple or Google is optional. If you do, the sign-in provider gives us a first name and an email address. Otherwise an anonymous device key is all that prevents abuse. No ads. Nothing sold."],
             ].map(([a, b]) => (
               <div className="sh-tr" key={a}>
                 <dt>{a}</dt>
