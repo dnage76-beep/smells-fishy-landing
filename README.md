@@ -30,3 +30,11 @@ src/            pages, components, styles
 public/         static assets
 next.config.ts  Next.js configuration
 ```
+
+## Design variants (2026-09-04)
+
+Ten complete alternative designs live on `landing/*` branches, one per
+branch, none merged. `VARIANTS.md` indexes them: what each copies, the
+idea, and how to run one. `BRIEF.md` is the standard they were built to
+and `VERIFIED_CLAIMS.md` is the source list for every number the site is
+allowed to print.
