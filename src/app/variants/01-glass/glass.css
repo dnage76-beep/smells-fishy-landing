@@ -1,0 +1,668 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   01-glass — construction copied from Apple's visionOS / iOS 26 Liquid
+   Glass marketing surfaces.
+
+   The rules this file encodes, in Apple's own order of operations:
+     1. There is an ENVIRONMENT behind everything. Glass is only interesting
+        if there is something worth refracting.
+     2. Glass is a LAYER ABOVE CONTENT, never the content layer itself.
+        Long-form reading surfaces are solid.
+     3. Every pane has four optical parts: a tint, a backdrop blur that also
+        saturates (glass concentrates colour), a 1px hairline that is bright
+        where the light hits (upper left) and dim on the far side, and a
+        grounding shadow so the pane reads as floating, not painted on.
+     4. An edge refraction band: a narrow inset ring with a second, stronger
+        backdrop filter, so content bends as it passes under the rim.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --g-navy: #081433;
+  --g-deep: #0d266b;
+  --g-blue: #1c5cf7;
+  --g-lum: #48a7f8;
+  --g-cream: #f5f0e1;
+  --g-coral: #ff6b5e;
+  --g-ink: #0a1f45;
+  --g-ink-2: #5c6979;
+  --g-pad: clamp(20px, 5vw, 56px);
+  --g-shell: 1180px;
+  --g-display: var(--font-display), ui-rounded, system-ui, sans-serif;
+}
+
+.g-page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  color: var(--g-cream);
+  background: #050d24;
+  overflow-x: clip;
+}
+
+/* ── 1. THE ENVIRONMENT ──────────────────────────────────────────────────
+   A single field spanning the whole document, so panes genuinely travel
+   over different colour regions as you scroll. Blobs are radial gradients
+   (softer and cheaper than blur() on 1000px boxes) drifting on long,
+   deliberately unsynchronised cycles. */
+
+.g-field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    #04091c 0%,
+    #081433 9%,
+    #0b1d49 22%,
+    #17418c 33%,
+    #2b60ac 40%,
+    #123067 48%,
+    #050c22 58%,
+    #040a1c 64%,
+    #0c2050 74%,
+    #1c4694 84%,
+    #0a1838 94%,
+    #04091c 100%
+  );
+}
+
+.g-field-inner {
+  position: absolute;
+  inset: -6% 0;
+}
+
+.g-blob {
+  position: absolute;
+  border-radius: 50%;
+}
+
+/* the light source of the whole page: upper-left, luminous */
+.g-b1 {
+  left: -18vw;
+  top: -6%;
+  width: 78vw;
+  height: 78vw;
+  max-height: 1100px;
+  background: radial-gradient(closest-side, rgba(72, 167, 248, 0.66), rgba(72, 167, 248, 0));
+  animation: gDriftA 41s ease-in-out infinite alternate;
+}
+.g-b2 {
+  right: -14vw;
+  top: 1%;
+  width: 62vw;
+  height: 62vw;
+  max-height: 900px;
+  background: radial-gradient(closest-side, rgba(28, 92, 247, 0.68), rgba(28, 92, 247, 0));
+  animation: gDriftB 53s ease-in-out infinite alternate;
+}
+/* the bright region — panes are deliberately parked over this one */
+.g-b3 {
+  left: 2vw;
+  top: 35%;
+  width: 76vw;
+  height: 40vw;
+  max-height: 700px;
+  background: radial-gradient(closest-side, rgba(228, 241, 255, 0.9), rgba(150, 196, 255, 0.3) 56%, rgba(140, 190, 255, 0));
+  animation: gDriftC 37s ease-in-out infinite alternate;
+}
+.g-b4 {
+  right: -8vw;
+  top: 44%;
+  width: 50vw;
+  height: 46vw;
+  max-height: 700px;
+  background: radial-gradient(closest-side, rgba(255, 128, 108, 0.4), rgba(255, 107, 94, 0));
+  animation: gDriftB 47s ease-in-out infinite alternate;
+}
+/* the dark region — the same pane recipe has to survive this too */
+.g-b5 {
+  left: 8vw;
+  top: 53%;
+  width: 96vw;
+  height: 56vw;
+  max-height: 980px;
+  background: radial-gradient(closest-side, rgba(1, 3, 12, 0.97), rgba(1, 3, 12, 0.5) 58%, rgba(1, 3, 12, 0));
+  animation: gDriftA 61s ease-in-out infinite alternate;
+}
+.g-b6 {
+  left: -12vw;
+  top: 66%;
+  width: 58vw;
+  height: 58vw;
+  max-height: 820px;
+  background: radial-gradient(closest-side, rgba(72, 167, 248, 0.4), rgba(72, 167, 248, 0));
+  animation: gDriftC 44s ease-in-out infinite alternate;
+}
+.g-b7 {
+  right: 4vw;
+  top: 80%;
+  width: 70vw;
+  height: 54vw;
+  max-height: 860px;
+  background: radial-gradient(closest-side, rgba(214, 231, 255, 0.5), rgba(255, 168, 140, 0.12) 62%, rgba(255, 168, 140, 0));
+  animation: gDriftB 39s ease-in-out infinite alternate;
+}
+.g-b8 {
+  left: 30vw;
+  top: 90%;
+  width: 46vw;
+  height: 46vw;
+  max-height: 620px;
+  background: radial-gradient(closest-side, rgba(255, 107, 94, 0.26), rgba(255, 107, 94, 0));
+  animation: gDriftA 33s ease-in-out infinite alternate;
+}
+
+@keyframes gDriftA {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(13%, -8%, 0) scale(1.14); }
+}
+@keyframes gDriftB {
+  from { transform: translate3d(0, 0, 0) scale(1.08); }
+  to   { transform: translate3d(-15%, 10%, 0) scale(0.94); }
+}
+@keyframes gDriftC {
+  from { transform: translate3d(-7%, 6%, 0) scale(0.96); }
+  to   { transform: translate3d(11%, -9%, 0) scale(1.18); }
+}
+
+/* Fine grain. Big gradient fields band badly on 8-bit displays; Apple's
+   environments carry a dither for the same reason. */
+.g-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='0.9'/></svg>");
+  background-size: 140px 140px;
+}
+
+.g-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* the environment resolves to black at the page edge, so the page ends on
+   purpose instead of running out of field */
+.g-field::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 420px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(2, 5, 15, 0) 0%, rgba(2, 5, 15, 0.72) 58%, #02050f 100%);
+}
+
+.g-colophon {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 34px 0 40px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(180, 202, 236, 0.5);
+  white-space: nowrap;
+}
+.g-colophon-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0));
+}
+
+/* ── 2. THE GLASS ────────────────────────────────────────────────────────
+   One recipe, one tint. Every text-bearing pane on this page uses the same
+   navy-tinted glass, which is what keeps it legible over the pale region at
+   30% of the page AND the near-black region at 54%. */
+
+.g-glass {
+  position: relative;
+  border-radius: 26px;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.035) 46%, rgba(255, 255, 255, 0.06) 100%),
+    linear-gradient(158deg, rgba(5, 13, 36, 0.68) 0%, rgba(7, 18, 46, 0.52) 52%, rgba(5, 13, 36, 0.62) 100%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%) brightness(1.08);
+  backdrop-filter: blur(24px) saturate(190%) brightness(1.08);
+  box-shadow:
+    0 26px 70px -18px rgba(2, 6, 20, 0.66),
+    0 6px 18px -8px rgba(2, 6, 20, 0.5),
+    inset 0 -22px 44px -34px rgba(0, 0, 0, 0.75);
+}
+
+/* the hairline: a 1px gradient ring, brightest at the upper-left where the
+   light lands, dark through the middle, faint rim-light returning bottom-right */
+.g-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(255, 255, 255, 0.34) 16%,
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.03) 58%,
+    rgba(255, 255, 255, 0.13) 82%,
+    rgba(255, 255, 255, 0.34) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* edge refraction: a soft band just inside the rim where light that entered
+   the top surface exits again. Drawn as a blurred gradient ring rather than a
+   second backdrop-filter, because stacking two dozen backdrop roots on one
+   page makes Chrome drop layers during a full-page capture. */
+.g-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 10px;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 30%, rgba(255, 255, 255, 0) 56%, rgba(255, 255, 255, 0.035) 76%, rgba(255, 255, 255, 0.12) 100%),
+    radial-gradient(120% 140% at 12% 0%, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0) 46%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.g-glass > * { position: relative; z-index: 2; }
+
+/* the specular streak: the highlight that runs along the top curve */
+.g-sheen {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 1px;
+  height: 1px;
+  z-index: 3;
+  border-radius: 999px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.9) 26%,
+    rgba(255, 255, 255, 0.42) 58%,
+    rgba(255, 255, 255, 0.06) 84%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* thinner glass for small ornaments floating in the field */
+.g-chip {
+  position: relative;
+  border-radius: 999px;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.045) 60%, rgba(255, 255, 255, 0.08) 100%),
+    linear-gradient(158deg, rgba(5, 13, 36, 0.62) 0%, rgba(7, 18, 46, 0.46) 100%);
+  -webkit-backdrop-filter: blur(22px) saturate(200%) brightness(1.1);
+  backdrop-filter: blur(22px) saturate(200%) brightness(1.1);
+  box-shadow:
+    0 14px 34px -12px rgba(2, 6, 20, 0.62),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.42),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.1),
+    inset 1px 0 0 0 rgba(255, 255, 255, 0.14);
+  color: var(--g-cream);
+}
+
+/* light glass. Only ever used ON TOP OF the solid cream sheet, never over
+   the field, so its contrast is a known quantity. */
+.g-chip--light {
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.5) 100%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow:
+    0 12px 30px -12px rgba(10, 31, 69, 0.34),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 0 rgba(10, 31, 69, 0.06);
+  color: var(--g-ink);
+}
+
+/* ── 3. FALLBACK ─────────────────────────────────────────────────────────
+   Without backdrop-filter there is no glass, so there is no translucency
+   either: the panes become solid navy and the page still reads correctly. */
+
+@supports not ((-webkit-backdrop-filter: blur(2px)) or (backdrop-filter: blur(2px))) {
+  .g-glass {
+    background: linear-gradient(158deg, rgba(9, 21, 54, 0.97), rgba(6, 15, 40, 0.99));
+  }
+  .g-glass::after { display: none; }
+  .g-chip {
+    background: rgba(9, 21, 54, 0.97);
+  }
+  .g-chip--light {
+    background: rgba(255, 255, 255, 0.97);
+  }
+  .g-nav-shell { background: rgba(6, 14, 36, 0.98) !important; }
+}
+
+/* ── layout primitives ──────────────────────────────────────────────────── */
+
+.g-shell {
+  width: 100%;
+  max-width: var(--g-shell);
+  margin: 0 auto;
+}
+
+.g-sec {
+  position: relative;
+  padding-left: var(--g-pad) !important;
+  padding-right: var(--g-pad) !important;
+}
+
+.g-h1 {
+  font-family: var(--g-display);
+  font-weight: 600;
+  font-size: clamp(42px, 7.4vw, 84px) !important;
+  line-height: 0.98;
+  letter-spacing: -0.022em;
+  margin: 0;
+  color: var(--g-cream);
+  text-wrap: balance;
+}
+
+.g-h2 {
+  font-family: var(--g-display);
+  font-weight: 600;
+  font-size: clamp(30px, 4.4vw, 50px);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.g-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 15px 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(232, 240, 255, 0.9);
+}
+
+.g-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--g-coral);
+  box-shadow: 0 0 10px 1px rgba(255, 107, 94, 0.8);
+}
+
+.g-lede {
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 1.55;
+  color: rgba(220, 233, 255, 0.92);
+  margin: 0;
+}
+
+/* Text that sits directly on the environment rather than on a pane. Apple
+   scrims copy over a photographic background for exactly this reason: the
+   field has a genuinely pale region and cream type dies on it. */
+.g-onfield { position: relative; }
+.g-onfield::before {
+  content: "";
+  position: absolute;
+  inset: -80px -160px -70px -120px;
+  z-index: -1;
+  border-radius: 80px;
+  pointer-events: none;
+  background: radial-gradient(
+    58% 60% at 26% 50%,
+    rgba(4, 10, 26, 0.62) 0%,
+    rgba(4, 10, 26, 0.4) 42%,
+    rgba(4, 10, 26, 0.12) 72%,
+    rgba(4, 10, 26, 0) 100%
+  );
+}
+.g-onfield--center::before {
+  inset: -60px -60px -50px;
+  background: radial-gradient(
+    58% 68% at 50% 50%,
+    rgba(3, 8, 22, 0.7) 0%,
+    rgba(3, 8, 22, 0.4) 50%,
+    rgba(3, 8, 22, 0) 100%
+  );
+}
+
+/* ── buttons ────────────────────────────────────────────────────────────── */
+
+.g-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: 999px;
+  font-family: var(--g-display);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 220ms ease, background 220ms ease;
+}
+
+.g-btn--primary {
+  padding: 15px 28px;
+  font-size: 16.5px;
+  color: #2a0b06;
+  background: linear-gradient(180deg, #ff8b7f 0%, #ff6b5e 52%, #f0574a 100%);
+  box-shadow:
+    0 16px 34px -12px rgba(255, 107, 94, 0.62),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.55),
+    inset 0 -2px 6px -2px rgba(120, 20, 10, 0.35);
+}
+.g-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 22px 44px -12px rgba(255, 107, 94, 0.72),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+}
+
+.g-btn--glass {
+  padding: 15px 26px;
+  font-size: 16.5px;
+  color: var(--g-cream);
+}
+.g-btn--glass:hover { transform: translateY(-2px); }
+
+.g-btn--sm { padding: 10px 19px; font-size: 14.5px; }
+
+/* ── nav ────────────────────────────────────────────────────────────────── */
+
+.g-nav {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  padding: 14px var(--g-pad) 0 !important;
+}
+
+.g-nav-shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  max-width: var(--g-shell);
+  margin: 0 auto;
+  padding: 9px 9px 9px 18px;
+  border-radius: 999px;
+}
+
+.g-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.g-nav-links a {
+  color: rgba(214, 228, 255, 0.78);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 180ms ease;
+}
+.g-nav-links a:hover { color: var(--g-cream); }
+
+/* ── the control strip (one-press section) ──────────────────────────────── */
+
+.g-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.g-strip-cell {
+  padding: 30px 28px 32px;
+  position: relative;
+}
+.g-strip-cell + .g-strip-cell { box-shadow: inset 1px 0 0 0 rgba(255, 255, 255, 0.12); }
+
+/* ── the solid reading sheet ────────────────────────────────────────────── */
+
+.g-sheet {
+  position: relative;
+  border-radius: 34px;
+  background: linear-gradient(174deg, #ffffff 0%, #fbf8ef 46%, #f2ecdb 100%);
+  color: var(--g-ink);
+  box-shadow:
+    0 44px 90px -30px rgba(2, 6, 20, 0.72),
+    0 10px 26px -12px rgba(2, 6, 20, 0.45),
+    inset 0 1px 0 0 rgba(255, 255, 255, 1);
+  overflow: hidden;
+}
+
+.g-sheet-dark {
+  position: relative;
+  border-radius: 34px;
+  background: linear-gradient(168deg, #0a1a41 0%, #071331 55%, #050e26 100%);
+  color: var(--g-cream);
+  box-shadow:
+    0 44px 90px -30px rgba(2, 6, 20, 0.8),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+}
+
+.g-rule { height: 1px; background: rgba(10, 31, 69, 0.1); }
+.g-rule--dark { height: 1px; background: rgba(255, 255, 255, 0.12); }
+
+/* ── the phone ──────────────────────────────────────────────────────────── */
+
+.g-phone {
+  position: relative;
+  width: clamp(292px, 24vw, 340px);
+  border-radius: 48px;
+  padding: 11px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.06) 44%, rgba(255, 255, 255, 0.2));
+  box-shadow:
+    0 60px 110px -34px rgba(2, 6, 20, 0.85),
+    0 18px 40px -18px rgba(2, 6, 20, 0.6),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  animation: gFloat 9s ease-in-out infinite;
+}
+
+@keyframes gFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-9px); }
+}
+
+.g-screen {
+  position: relative;
+  border-radius: 38px;
+  overflow: hidden;
+  background: #eef2f9;
+  color: var(--g-ink);
+  text-align: left;
+}
+
+/* the contact shadow that makes it stand on the field rather than in it */
+.g-phone-ground {
+  position: absolute;
+  left: 50%;
+  bottom: -46px;
+  transform: translateX(-50%);
+  width: clamp(320px, 27vw, 376px);
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(2, 6, 20, 0.6), rgba(2, 6, 20, 0));
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* ── misc ───────────────────────────────────────────────────────────────── */
+
+.g-link {
+  color: #9ecbff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(158, 203, 255, 0.34);
+  transition: color 180ms ease, border-color 180ms ease;
+}
+.g-link:hover { color: #ffffff; border-color: rgba(255, 255, 255, 0.6); }
+
+.g-src {
+  font-size: 12.5px;
+  color: rgba(200, 218, 245, 0.78);
+}
+.g-src a { color: rgba(214, 231, 255, 0.95); }
+
+.g-num {
+  font-family: var(--g-display);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* ── responsive ─────────────────────────────────────────────────────────── */
+
+.g-flip-media { order: -1; }
+
+@media (max-width: 1024px) {
+  .g-split { grid-template-columns: 1fr !important; gap: 34px !important; }
+  .g-ornament { display: none !important; }
+  .g-flip-media { order: 0; }
+}
+
+@media (max-width: 860px) {
+  .g-strip { grid-template-columns: 1fr !important; }
+  .g-strip-cell + .g-strip-cell { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12); }
+  .g-stat-rail { grid-template-columns: 1fr !important; }
+  .g-stat-cell + .g-stat-cell { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12) !important; }
+  .g-promise-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 720px) {
+  .g-nav-links { display: none !important; }
+}
+
+@media (max-width: 640px) {
+  .g-h1 { font-size: clamp(38px, 11.5vw, 54px) !important; letter-spacing: -0.028em; }
+  .g-nav { padding-left: 14px !important; padding-right: 14px !important; }
+  .g-sec { padding-left: 18px !important; padding-right: 18px !important; }
+  .g-cta-row { flex-direction: column !important; align-items: stretch !important; }
+  .g-cta-row > a { width: 100%; }
+  .g-count-strip { gap: 16px 22px !important; }
+  .g-footer-row { flex-direction: column !important; align-items: flex-start !important; gap: 18px !important; }
+  .g-colophon { font-size: 10.5px; gap: 12px; letter-spacing: 0.09em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-blob, .g-phone { animation: none !important; }
+}

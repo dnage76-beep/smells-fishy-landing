@@ -28,7 +28,26 @@ for (const [label, width, height, full] of sizes) {
   // Let fonts settle and any entrance animation finish before the shutter.
   await page.evaluate(() => document.fonts.ready);
   await new Promise((r) => setTimeout(r, 1500));
-  await page.screenshot({ path: `${outDir}/${name}-${label}.png`, fullPage: full });
+  if (full) {
+    // Two things go wrong with a naive full-page shot of a long, effect-heavy
+    // page. Puppeteer's default (captureBeyondViewport) rasterises past the
+    // viewport without compositing backdrop-filter, so translucent panels come
+    // out empty; and a 2x raster of a several-thousand-pixel page blows the
+    // compositor's tile budget on a small machine, which drops whole bands of
+    // content. So: grow the viewport to the document, keep the raster under a
+    // safe pixel budget, and give it a beat to settle before the shutter.
+    const docHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+    const pageHeight = Math.min(docHeight, 30000);
+    const budget = 16e6;
+    const scale = [2, 1.5, 1].find((s) => width * s * pageHeight * s <= budget) ?? 1;
+    await page.setViewport({ width, height: pageHeight, deviceScaleFactor: scale });
+    await new Promise((r) => setTimeout(r, 1200));
+  }
+  await page.screenshot({
+    path: `${outDir}/${name}-${label}.png`,
+    fullPage: full,
+    captureBeyondViewport: false,
+  });
   const errors = await page.evaluate(() => window.__errors || []);
   if (errors.length) console.error(label, "page errors:", errors);
   await page.close();

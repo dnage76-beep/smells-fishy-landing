@@ -1,27 +1,32 @@
+import "./variants/01-glass/glass.css";
+import { Field } from "./variants/01-glass/field";
 import {
   Nav,
   Hero,
-  StakesBand,
-  HowItWorks,
-  DeeperLook,
-  SiriSection,
-  PrivacySection,
+  StatRail,
+  OnePress,
+  TheAnswer,
+  DeepDive,
+  Privacy,
   FinalCTA,
   Footer,
-} from "./components/site";
+} from "./variants/01-glass/sections";
 
 export default function Home() {
   return (
-    <div style={{ minHeight: "100vh" }}>
-      <Nav />
-      <Hero />
-      <StakesBand />
-      <HowItWorks />
-      <DeeperLook />
-      <SiriSection />
-      <PrivacySection />
-      <FinalCTA />
-      <Footer />
+    <div className="g-page">
+      <Field />
+      <div className="g-content">
+        <Nav />
+        <Hero />
+        <StatRail />
+        <OnePress />
+        <TheAnswer />
+        <DeepDive />
+        <Privacy />
+        <FinalCTA />
+        <Footer />
+      </div>
     </div>
   );
 }
