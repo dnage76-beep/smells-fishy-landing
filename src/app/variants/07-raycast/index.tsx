@@ -302,7 +302,7 @@ export function Hero() {
           </a>
         </div>
         <div className="ray-hero-note ray-in" style={{ animationDelay: "190ms" }}>
-          NO ACCOUNT · 10 FREE CHECKS A DAY
+          NO ACCOUNT REQUIRED · 10 FREE CHECKS A DAY
         </div>
 
         <CommandSurface />
@@ -364,8 +364,8 @@ const CARDS: { icon: IconName; color: string; title: string; body: string }[] = 
   {
     icon: "nobody",
     color: "var(--blue)",
-    title: "No account",
-    body: "Nothing to sign up for. An anonymous device key is all that stops abuse.",
+    title: "No account required",
+    body: "Signing in with Apple or Google is optional. Without it, an anonymous device key is all that stops abuse.",
   },
 ];
 
@@ -627,7 +627,7 @@ export function Privacy() {
             {[
               ["You approve every send", "Checking runs on our server and Google's Gemini. The content is used for that check and is not stored on our server afterwards."],
               ["History stays on your iPhone", "Results are saved on the device, protected by iOS. Delete any check, or all of them, whenever you like."],
-              ["No account, no tracking", "An anonymous device key prevents abuse. No ads. Nothing sold."],
+              ["No account required", "Signing in with Apple or Google is optional. If you do, the sign-in provider gives us a first name and an email address. Otherwise an anonymous device key is all that prevents abuse. No ads. Nothing sold."],
             ].map(([t, b]) => (
               <div className="ray-prow" key={t}>
                 <h3>{t}</h3>
