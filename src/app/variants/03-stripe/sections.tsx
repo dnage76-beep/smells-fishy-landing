@@ -100,7 +100,7 @@ export function Hero() {
                 </a>
               </div>
               <p className="sp-mono" style={{ marginTop: 26, color: "rgba(205,224,252,0.74)" }}>
-                No account · History stays on your iPhone
+                No account required · History stays on your iPhone
               </p>
             </div>
 
@@ -344,7 +344,7 @@ const FEATURES: [React.ReactNode, string, string][] = [
   [<IconClock key="a" />, "About eight seconds", "Typical time from the press to the verdict."],
   [<IconLayers key="b" />, "Text, email, link or screenshot", "If a screen can lie to you, it can be checked."],
   [<IconPhoneLock key="c" />, "History stays on your iPhone", "Saved on the device, protected by iOS."],
-  [<IconKey key="d" />, "No account required", "An anonymous device key, not your name."],
+  [<IconKey key="d" />, "No account required", "Signing in with Apple or Google is optional."],
   [<IconLink key="e" />, "Sources you can open", "Every Deep Dive lists what it read."],
   [<IconTrash key="f" />, "Delete any check, any time", "One check or the whole history."],
 ];
@@ -375,10 +375,10 @@ export function Features() {
 
 /* ============================ privacy ============================ */
 
-const PRIVACY: [string, string][] = [
-  ["You agree before anything is sent", "The check runs on our server and Google's Gemini. Your content is used for that check only, and the server does not keep it afterward."],
-  ["Your history is yours", "Results and the content you checked are saved on your iPhone, under iOS file protection. Delete one, or delete all of it."],
-  ["No ads, nothing sold", "No account, no tracking across other apps, no data for sale. An anonymous device key only exists to stop abuse."],
+const PRIVACY: [string, string, React.ReactNode][] = [
+  ["You agree before anything is sent", "The check runs on our server and Google's Gemini. Your content is used for that check only, and the server does not keep it afterward.", <IconShield key="a" />],
+  ["Your history is yours", "Results and the content you checked are saved on your iPhone, under iOS file protection. Delete one, or delete all of it.", <IconPhoneLock key="b" />],
+  ["No ads, nothing sold", "No tracking across other apps and no data for sale. Signing in is optional; if you do, the provider gives us a first name and an email address.", <IconEye key="c" />],
 ];
 
 export function Privacy() {
@@ -392,10 +392,10 @@ export function Privacy() {
           </div>
         </div>
         <div className="sp-grid" style={{ rowGap: 36 }}>
-          {PRIVACY.map(([title, body], i) => (
+          {PRIVACY.map(([title, body, icon], i) => (
             <div key={title} className="sp-third sp-rv" style={{ transitionDelay: `${i * 70}ms`, borderTop: "1px solid #dbe3ee", paddingTop: 24 }}>
               <span style={{ color: "#1c5cf7", display: "block" }}>
-                <IconEye />
+                {icon}
               </span>
               <h3 className="sp-h3" style={{ margin: "14px 0 7px" }}>
                 {title}

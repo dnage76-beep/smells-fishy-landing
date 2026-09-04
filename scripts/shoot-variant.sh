@@ -22,6 +22,6 @@ curl -sf -o /dev/null http://localhost:3102 || { echo "server never came up"; ta
 
 LOCK=web "/Users/Nagel/Code/Active/smellsfishy/Smells Phishy/scripts/with-build-lock.sh" \
   env PUPPETEER_EXECUTABLE_PATH="$chrome" node "$root/scripts/shoot.mjs" http://localhost:3102 "$out" "$name"
-status=$?
+rc=$?
 kill $srv 2>/dev/null
-exit $status
+exit $rc

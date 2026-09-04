@@ -99,3 +99,10 @@ Hero says one thing. Every verdict is hedged (`showed warning signs`,
 `worth a second look`, `looks okay so far`). No store badges, no press logos, no
 invented numbers, no testimonials, no em dashes. The CTA is the beta mail link;
 the footer and two body links point at `/privacy`.
+
+No number appears that is not in `VERIFIED_CLAIMS.md`: about eight seconds, one
+press, history on the device, no account required. On accounts the page says
+"no account required" and never that the app has no accounts: the feature cell
+and the privacy cell both state that signing in with Apple or Google is
+optional, and the privacy cell adds that if you do sign in the provider gives us
+a first name and an email address.
