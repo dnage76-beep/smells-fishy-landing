@@ -419,7 +419,11 @@ const SPECS: [string, string][] = [
   ["During the check", "It runs on our server and Google's Gemini, for that check only."],
   ["After the check", "Our server does not keep what you sent."],
   ["Your history", "Saved on your iPhone, protected by iOS. Delete one, or delete all of them."],
-  ["Your identity", "No account. An anonymous device key stops abuse. No ads, nothing sold."],
+  ["Your identity", "No account required. An anonymous device key stops abuse. No ads, nothing sold."],
+  [
+    "If you sign in",
+    "Optional. Sign in with Apple or Google and the provider gives us a first name and an email address, so your checks stay yours.",
+  ],
 ];
 
 function Privacy() {
@@ -479,10 +483,11 @@ function Privacy() {
 
 /* --------------------------------------------------------------- numbers */
 
+// Every figure and its wording is fixed by VERIFIED_CLAIMS.md.
 const NUMBERS: [string, string][] = [
-  ["$20.9B", "lost to internet crime in 2025"],
-  ["1,008,597", "complaints to the FBI in one year"],
-  ["$7.75B", "taken from people 60 and older"],
+  ["$20.9B", "reported lost to internet crime in 2025"],
+  ["1,008,597", "complaints filed with the FBI in one year"],
+  ["$7.75B", "of it reported by people over 60"],
 ];
 
 function Numbers() {

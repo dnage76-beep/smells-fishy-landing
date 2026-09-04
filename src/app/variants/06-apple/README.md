@@ -73,6 +73,11 @@ positions.
 - **No store badges, no press row, no testimonials,** which is where an Apple
   page would normally put a "Buy" band. The closing section asks for a beta
   invite instead.
+- **The spec table has a row Apple would not need: "If you sign in".** The app
+  gained optional Apple and Google sign-in, so the page says "No account
+  required" rather than "no account", and spends a row saying what a provider
+  hands over when someone does sign in. Every figure on the page and its
+  wording come from `VERIFIED_CLAIMS.md`.
 
 ## Brand rules bent
 
