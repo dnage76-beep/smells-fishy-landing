@@ -197,7 +197,7 @@ function Hero() {
           <div className="sh-eyebrow">iPhone &middot; Private beta</div>
         </Reveal>
         <Reveal delay={140}>
-          <h1 className="sh-display sh-h1">Take eight seconds first.</h1>
+          <h1 className="sh-display sh-h1">Take about eight seconds first.</h1>
         </Reveal>
         <Reveal delay={280}>
           <p className="sh-body">
@@ -493,9 +493,9 @@ function Numbers() {
       <Reveal delay={140}>
         <div className="sh-nums" style={{ marginTop: 40 }}>
           {[
-            ["$20.9B", "lost to internet crime in 2025"],
+            ["$20.9B", "reported lost to internet crime in 2025"],
             ["1,008,597", "complaints filed"],
-            ["$7.75B", "taken from people 60 and older"],
+            ["$7.75B", "of it reported by people over 60"],
           ].map(([n, l]) => (
             <div className="sh-num" key={l}>
               <b>{n}</b>
