@@ -1,0 +1,369 @@
+/* ============================================================
+   Variant 03 — Stripe.com construction.
+   Every class is prefixed `sp-` so none of the legacy !important
+   rules in globals.css (written for the old page) reach this one.
+   Where a legacy element selector uses !important (section, nav,
+   footer, h1 under 640px) the matching sp- class re-declares it,
+   because a class with !important beats an element with !important.
+   ============================================================ */
+
+.sp-page {
+  background: #ffffff;
+  color: #0a1f45;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+.sp-page ::selection { background: rgba(28, 92, 247, 0.16); color: #0a1f45; }
+
+/* ---------------- the column grid everything lands on ---------------- */
+.sp-wrap {
+  width: 100%;
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.sp-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 32px;
+}
+.sp-section {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: clamp(64px, 8vw, 104px);
+  padding-bottom: clamp(64px, 8vw, 104px);
+  position: relative;
+}
+.sp-rule { border-top: 1px solid #e6ebf2; }
+.sp-tint { background: #f6f9fc; }
+.sp-ink-bg { background: #071230; }
+
+/* column placements */
+.sp-claim-l { grid-column: 1 / span 5; }
+.sp-art-r   { grid-column: 7 / span 6; }
+.sp-claim-r { grid-column: 8 / span 5; grid-row: 1; }
+.sp-art-l   { grid-column: 1 / span 6; grid-row: 1; }
+.sp-third   { grid-column: span 4; }
+.sp-quarter { grid-column: span 3; }
+.sp-half    { grid-column: span 6; }
+.sp-full    { grid-column: 1 / -1; }
+.sp-head-6  { grid-column: 1 / span 7; }
+
+/* ---------------- type scale ---------------- */
+.sp-eyebrow {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+  margin: 0 0 16px;
+  color: #1c5cf7;
+}
+.sp-eyebrow-on-dark { color: #7cc2fb; }
+.sp-h1 {
+  font-size: clamp(40px, 5.2vw, 66px) !important;
+  line-height: 1.03;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+.sp-h2 {
+  font-size: clamp(28px, 3.3vw, 40px);
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -0.024em;
+  margin: 0;
+}
+.sp-h3 { font-size: 16.5px; font-weight: 600; letter-spacing: -0.011em; margin: 0; }
+.sp-lede { font-size: 19px; line-height: 1.6; margin: 22px 0 0; max-width: 30em; }
+.sp-body { font-size: 16.5px; line-height: 1.66; margin: 18px 0 0; color: #46586f; max-width: 34em; }
+.sp-small { font-size: 14px; line-height: 1.6; color: #6b7c93; margin: 0; }
+.sp-mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, "Roboto Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ---------------- controls ---------------- */
+.sp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 170ms cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 170ms ease, background 170ms ease;
+}
+.sp-btn-cream { background: #f5f0e1; color: #071230; }
+.sp-btn-cream:hover { background: #fff; transform: translateY(-1px); box-shadow: 0 10px 22px rgba(4, 12, 34, 0.3); }
+.sp-btn-blue { background: #1c5cf7; color: #fff; }
+.sp-btn-blue:hover { background: #164ad0; transform: translateY(-1px); box-shadow: 0 10px 22px rgba(28, 92, 247, 0.26); }
+.sp-btn-sm { height: 38px; padding: 0 18px; font-size: 14px; }
+
+.sp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  text-decoration: none;
+  color: #1c5cf7;
+}
+.sp-link svg { transition: transform 200ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+.sp-link:hover svg { transform: translateX(3px); }
+.sp-link-on-dark { color: #7cc2fb; }
+
+.sp-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 15px 35px rgba(10, 31, 69, 0.1), 0 5px 15px rgba(10, 31, 69, 0.06);
+}
+.sp-card-hero { box-shadow: 0 28px 62px rgba(3, 10, 30, 0.42), 0 6px 18px rgba(3, 10, 30, 0.24); }
+.sp-panel {
+  background: #0b1c46;
+  border-radius: 14px;
+  border: 1px solid rgba(124, 194, 251, 0.16);
+  box-shadow: 0 24px 54px rgba(6, 16, 42, 0.34);
+  overflow: hidden;
+}
+.sp-panel-tabs {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 0 18px;
+  height: 42px;
+  border-bottom: 1px solid rgba(124, 194, 251, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+}
+.sp-tab { color: rgba(200, 219, 250, 0.5); }
+.sp-tab-on { color: #f5f0e1; position: relative; }
+.sp-tab-on::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -12px;
+  height: 2px;
+  border-radius: 2px;
+  background: #48a7f8;
+}
+
+/* ---------------- nav ---------------- */
+.sp-nav {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: background 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+  border-bottom: 1px solid transparent;
+}
+.sp-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 68px;
+}
+.sp-navlink {
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  text-decoration: none;
+  color: rgba(245, 240, 225, 0.82);
+  transition: color 160ms ease;
+}
+.sp-navlink:hover { color: #fff; }
+.sp-nav-stuck { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(14px); border-bottom-color: #e6ebf2; }
+.sp-nav-stuck .sp-navlink { color: #46586f; }
+.sp-nav-stuck .sp-navlink:hover { color: #0a1f45; }
+.sp-nav-stuck .sp-wordmark-a { color: #0a1f45; }
+.sp-nav-stuck .sp-btn-cream { background: #1c5cf7; color: #fff; }
+.sp-nav-stuck .sp-btn-cream:hover { background: #164ad0; }
+.sp-wordmark-a { color: #0a1f45; transition: color 240ms ease; }
+.sp-nav .sp-wordmark-a { color: #f5f0e1; }
+.sp-wordmark-b { color: #ff6b5e; }
+
+/* ---------------- the angled gradient ribbon ----------------
+   Stripe cuts its gradient with a single diagonal that rises to the right.
+   The cut is a clip-path rather than a skew so that nothing has to clip its
+   overflow, which would break the sticky nav sitting on top of it. --sp-cut is
+   a viewport width, so the angle of the diagonal is identical at 1440 and 390. */
+.sp-page { --sp-cut: 15vw; --sp-navh: 68px; }
+
+.sp-top {
+  position: relative;
+  background: #fff;
+  margin-top: calc(var(--sp-navh) * -1);
+  padding-top: var(--sp-navh);
+  padding-bottom: clamp(104px, 12vw, 172px);
+}
+.sp-ribbon,
+.sp-ribbon-edge,
+.sp-ribbon-echo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.sp-ribbon-edge {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--sp-cut) + 2px), 0 calc(100% + 2px));
+  background: linear-gradient(100deg, rgba(245, 240, 225, 0) 8%, rgba(245, 240, 225, 0.6) 46%, rgba(255, 107, 94, 0.7) 100%);
+}
+.sp-ribbon {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--sp-cut)), 0 100%);
+  background:
+    radial-gradient(44% 60% at 76% 14%, rgba(96, 186, 255, 0.95) 0%, rgba(96, 186, 255, 0) 64%),
+    radial-gradient(36% 54% at 99% 58%, rgba(255, 107, 94, 0.86) 0%, rgba(255, 107, 94, 0) 60%),
+    radial-gradient(54% 66% at 52% 100%, rgba(28, 92, 247, 0.78) 0%, rgba(28, 92, 247, 0) 66%),
+    radial-gradient(58% 78% at -2% 2%, rgba(3, 8, 24, 0.97) 0%, rgba(3, 8, 24, 0) 68%),
+    linear-gradient(112deg, #06102a 0%, #0b1f55 26%, #123b9e 48%, #1c5cf7 72%, #48a7f8 92%, #7fd0ff 100%);
+  background-position: var(--sp-shift, 0px) 0;
+}
+/* a second, quieter rule running parallel to the cut */
+.sp-ribbon-echo {
+  clip-path: polygon(
+    0 calc(100% + 30px),
+    100% calc(100% - var(--sp-cut) + 30px),
+    100% calc(100% - var(--sp-cut) + 31px),
+    0 calc(100% + 31px)
+  );
+  background: rgba(10, 31, 69, 0.1);
+}
+.sp-hero-body { position: relative; z-index: 2; }
+
+/* the closing block mirrors the opening one: same angle, cut at the top */
+.sp-cta {
+  position: relative;
+  background: #fff;
+  padding-top: clamp(96px, 12vw, 158px);
+  padding-bottom: clamp(76px, 9vw, 120px);
+}
+.sp-ribbon-b,
+.sp-ribbon-b-edge {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.sp-ribbon-b-edge {
+  clip-path: polygon(0 calc(var(--sp-cut) - 2px), 100% -2px, 100% 100%, 0 100%);
+  background: linear-gradient(100deg, rgba(245, 240, 225, 0) 8%, rgba(245, 240, 225, 0.6) 46%, rgba(255, 107, 94, 0.7) 100%);
+}
+.sp-ribbon-b {
+  clip-path: polygon(0 var(--sp-cut), 100% 0, 100% 100%, 0 100%);
+  background:
+    radial-gradient(46% 70% at 88% 100%, rgba(72, 167, 248, 0.9) 0%, rgba(72, 167, 248, 0) 66%),
+    radial-gradient(38% 60% at 99% 30%, rgba(255, 107, 94, 0.78) 0%, rgba(255, 107, 94, 0) 62%),
+    radial-gradient(62% 82% at 0% 96%, rgba(4, 10, 28, 0.96) 0%, rgba(4, 10, 28, 0) 70%),
+    linear-gradient(112deg, #06102a 0%, #0b1f55 34%, #123b9e 60%, #1c5cf7 84%, #48a7f8 100%);
+}
+
+/* ---------------- feature cells ---------------- */
+.sp-feat { padding-top: 26px; border-top: 1px solid #e6ebf2; }
+.sp-feat-icon { color: #1c5cf7; display: block; }
+.sp-feat h3 { margin: 14px 0 6px; }
+.sp-feat p { margin: 0; font-size: 15px; line-height: 1.6; color: #5c6979; }
+
+/* ---------------- logo strip ---------------- */
+.sp-logostrip { display: flex; flex-wrap: wrap; align-items: center; gap: 34px; }
+.sp-logostrip img {
+  height: 26px;
+  width: auto;
+  opacity: 0.3;
+  transition: opacity 200ms ease;
+}
+.sp-logostrip img:hover { opacity: 0.72; }
+
+/* ---------------- the eight second rail ---------------- */
+.sp-rail { position: relative; height: 1px; background: rgba(124, 194, 251, 0.22); }
+.sp-rail-fill {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #48a7f8, #ff6b5e);
+  width: 0;
+  animation: sp-fill 1600ms cubic-bezier(0.35, 0.9, 0.3, 1) 500ms forwards;
+}
+@keyframes sp-fill { to { width: 100%; } }
+.sp-tick { position: absolute; top: -5px; width: 1px; height: 11px; background: rgba(124, 194, 251, 0.34); }
+
+/* ---------------- scroll reveal ---------------- */
+.sp-rv {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 560ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 560ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.sp-rv.sp-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-rv { opacity: 1 !important; transform: none !important; }
+  .sp-rail-fill { animation: none; width: 100%; }
+}
+
+/* ---------------- footer ---------------- */
+.sp-footer { padding-left: 0 !important; padding-right: 0 !important; border-top: 1px solid #e6ebf2; }
+.sp-footlink {
+  display: block;
+  font-size: 14.5px;
+  line-height: 2.1;
+  color: #5c6979;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.sp-footlink:hover { color: #1c5cf7; }
+
+/* ---------------- responsive ---------------- */
+@media (max-width: 1080px) {
+  .sp-grid { column-gap: 24px; }
+  .sp-wrap { padding: 0 28px; }
+  .sp-claim-l { grid-column: 1 / span 6; }
+  .sp-art-r { grid-column: 7 / span 6; }
+}
+@media (max-width: 900px) {
+  .sp-page { --sp-navh: 62px; --sp-cut: 13vw; }
+  .sp-claim-l, .sp-art-r, .sp-claim-r, .sp-art-l, .sp-head-6 { grid-column: 1 / -1; grid-row: auto; }
+  .sp-grid { row-gap: 44px; }
+  .sp-third { grid-column: span 6; }
+  .sp-quarter { grid-column: span 6; }
+  .sp-nav-inner { height: 62px; }
+  .sp-top { padding-bottom: clamp(84px, 11vw, 130px); }
+  .sp-art-r, .sp-art-l { max-width: 540px; }
+  .sp-cta-spec { grid-column: 1 / -1 !important; max-width: 420px; margin-top: 8px; }
+}
+@media (max-width: 780px) {
+  .sp-nav-cta { display: none; }
+  .sp-nav-links { margin-left: auto !important; gap: 20px !important; }
+}
+@media (max-width: 640px) {
+  .sp-page { --sp-cut: 15vw; }
+  .sp-wrap { padding: 0 20px !important; }
+  .sp-grid { column-gap: 16px; }
+  .sp-third, .sp-quarter, .sp-half { grid-column: 1 / -1; }
+  .sp-lede { font-size: 17.5px; }
+  .sp-body { font-size: 16px; }
+  .sp-logostrip { gap: 22px; }
+  .sp-logostrip img { height: 19px; }
+  .sp-section { padding-top: 58px; padding-bottom: 58px; }
+  .sp-nav-links { gap: 16px !important; }
+  .sp-navlink { font-size: 13.5px; }
+  .sp-btn { width: 100%; justify-content: center; }
+  .sp-cta { padding-top: clamp(90px, 22vw, 130px); }
+}
+@media (max-width: 430px) {
+  .sp-navlink { font-size: 12px; }
+  .sp-nav-links { gap: 12px !important; }
+  .sp-nav-wordmark { font-size: 15px !important; }
+  .sp-press-body { gap: 16px !important; }
+  .sp-press-body > svg { width: 86px; height: 150px; }
+}

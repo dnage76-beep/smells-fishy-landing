@@ -1,27 +1,33 @@
+// Landing variant 03 — Stripe.com construction.
+// Source lives in src/app/variants/03-stripe/ with its own README.
 import {
   Nav,
   Hero,
-  StakesBand,
-  HowItWorks,
-  DeeperLook,
-  SiriSection,
-  PrivacySection,
+  Channels,
+  TheAnswer,
+  OnePress,
+  DeepDive,
+  Features,
+  Privacy,
   FinalCTA,
   Footer,
-} from "./components/site";
+  ScrollFx,
+} from "./variants/03-stripe/sections";
 
 export default function Home() {
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div className="sp-page">
       <Nav />
       <Hero />
-      <StakesBand />
-      <HowItWorks />
-      <DeeperLook />
-      <SiriSection />
-      <PrivacySection />
+      <Channels />
+      <TheAnswer />
+      <OnePress />
+      <DeepDive />
+      <Features />
+      <Privacy />
       <FinalCTA />
       <Footer />
+      <ScrollFx />
     </div>
   );
 }
