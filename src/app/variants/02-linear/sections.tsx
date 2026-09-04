@@ -97,7 +97,7 @@ export function Nav() {
 export function Hero() {
   const rail: [string, string][] = [
     ["Channel", "Messages"],
-    ["Elapsed", "8.2s"],
+    ["Elapsed", "About 8s"],
     ["Verdict", "Showed warning signs"],
     ["Signals", "3"],
     ["History", "This iPhone only"],
@@ -155,7 +155,7 @@ export function Hero() {
               <span className="l-meta">flagged</span>
             </span>
             <span className="l-meta" style={{ textTransform: "none", letterSpacing: "0.04em" }}>
-              8.2s
+              About 8s
             </span>
           </div>
 
@@ -333,7 +333,7 @@ export function OnePress() {
       <div className="l-shell">
         <Header
           eyebrow="One press"
-          title="It runs off a button you already have."
+          title="It runs off the Action Button, Back Tap, the share sheet, or Siri."
           lede="Set it once. After that, checking something suspicious is a single action."
         />
         <div className="l-cells l-cells--4" style={{ marginTop: 40, gridTemplateColumns: "repeat(4, minmax(0,1fr))" }}>
@@ -441,7 +441,7 @@ export function TheResult() {
                 </div>
               ))}
               <p style={{ margin: "14px 0 0", fontSize: 12.5, lineHeight: 1.55, color: "var(--l-text-3)" }}>
-                Never a flat “this is a scam”. It cannot know that, and neither can anything else.
+                Never a flat “this is a scam”. It reports what it can see in the message, and stops there.
               </p>
             </div>
           </div>
