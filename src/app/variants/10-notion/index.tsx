@@ -462,8 +462,7 @@ function Where() {
         Where it works
       </h2>
       <p className="nt-p dim">
-        Anywhere you can take a screenshot. These are the ones people bring in
-        most.
+        Anywhere you can take a screenshot. These are a few of them.
       </p>
       <div className="nt-tablewrap">
         <table className="nt-table">
