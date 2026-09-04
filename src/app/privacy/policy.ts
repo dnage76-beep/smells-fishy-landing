@@ -23,7 +23,7 @@ export const POLICY_SECTIONS: { title: string; body: string }[] = [
   },
   {
     title: "No account required",
-    body: `The app uses a random, anonymous device key (stored in your iPhone's Keychain) to prevent abuse and enforce fair-use limits. On its own it is not connected to your name, email, or phone number. Our server keeps a record of the device (the key, your iPhone's vendor identifier, and the date and risk level of each check, never its content) so limits work across launches. To have that device record deleted, email ${CONTACT_EMAIL}.`,
+    body: `The app uses a random, anonymous device key (stored in your iPhone's Keychain) to prevent abuse and enforce fair-use limits. On its own it is not connected to your name, email, or phone number. Our server keeps a record of the device (the key and your iPhone's vendor identifier) and, for each check, which device asked, the date and time, the risk level, and the number of tokens the AI processed. It never keeps the content of a check. To have that device record deleted, email ${CONTACT_EMAIL}.`,
   },
   {
     title: "If you choose to sign in",
