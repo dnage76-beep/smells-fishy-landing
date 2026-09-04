@@ -21,42 +21,24 @@ const ORANGE_Y = new Set([
   "fake pics",
 ]);
 
-function CrossfadeWord({
-  words,
-  interval,
-  initialDelay = 0,
+const FADE_MS = 300;
+const MIN_DELAY = 2800;
+const MAX_DELAY = 4800;
+const MIN_GAP = 1800;
+
+function Word({
+  word,
+  visible,
   accentMap,
+  allWords,
 }: {
-  words: string[];
-  interval: number;
-  initialDelay?: number;
+  word: string;
+  visible: boolean;
   accentMap?: Set<string>;
+  allWords: string[];
 }) {
-  const [i, setI] = useState(0);
-  const [fade, setFade] = useState(1);
-
-  useEffect(() => {
-    let t1: ReturnType<typeof setInterval> | undefined;
-    let t2: ReturnType<typeof setTimeout> | undefined;
-    const start = setTimeout(() => {
-      t1 = setInterval(() => {
-        setFade(0);
-        t2 = setTimeout(() => {
-          setI((v) => (v + 1) % words.length);
-          setFade(1);
-        }, 360);
-      }, interval);
-    }, initialDelay);
-    return () => {
-      clearTimeout(start);
-      if (t1) clearInterval(t1);
-      if (t2) clearTimeout(t2);
-    };
-  }, [words, interval, initialDelay]);
-
-  const widest = words.reduce((a, b) => (a.length > b.length ? a : b));
-  const cur = words[i];
-  const isAccent = accentMap && accentMap.has(cur);
+  const widest = allWords.reduce((a, b) => (a.length > b.length ? a : b));
+  const isAccent = accentMap && accentMap.has(word);
 
   return (
     <span
@@ -70,14 +52,7 @@ function CrossfadeWord({
         position: "relative",
       }}
     >
-      <span
-        style={{
-          gridColumn: 1,
-          gridRow: 1,
-          visibility: "hidden",
-          whiteSpace: "nowrap",
-        }}
-      >
+      <span style={{ gridColumn: 1, gridRow: 1, visibility: "hidden", whiteSpace: "nowrap" }}>
         {widest}
       </span>
       <span
@@ -85,13 +60,13 @@ function CrossfadeWord({
           gridColumn: 1,
           gridRow: 1,
           whiteSpace: "nowrap",
-          opacity: fade,
-          transition: "opacity 360ms ease",
+          opacity: visible ? 1 : 0,
+          transition: `opacity ${FADE_MS}ms ease`,
           position: "relative",
         }}
       >
         <span style={{ position: "relative", display: "inline-block" }}>
-          {cur}
+          {word}
           {isAccent && (
             <span
               aria-hidden
@@ -116,6 +91,71 @@ function CrossfadeWord({
 }
 
 export function RotatingHeadline() {
+  const [xi, setXi] = useState(0);
+  const [yi, setYi] = useState(0);
+  const [xVisible, setXVisible] = useState(true);
+  const [yVisible, setYVisible] = useState(true);
+
+  useEffect(() => {
+    let alive = true;
+    const cleanups: (() => void)[] = [];
+    // scheduledAt = when the visible word-swap will happen (absolute timestamp)
+    const scheduledAt = { x: Infinity, y: Infinity };
+
+    const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
+    function schedule(
+      key: "x" | "y",
+      setIndex: React.Dispatch<React.SetStateAction<number>>,
+      setVisible: React.Dispatch<React.SetStateAction<boolean>>,
+      length: number,
+      initialDelay: number
+    ) {
+      let idx = 0;
+
+      const planNext = (fromNow: number) => {
+        // fromNow is when we START the fade; actual swap is FADE_MS later
+        const other = key === "x" ? "y" : "x";
+        const otherSwap = scheduledAt[other];
+        let adjusted = fromNow;
+        // retry up to a few times with fresh random delays until we're clear of the other's swap
+        for (let attempt = 0; attempt < 8; attempt++) {
+          const mySwap = performance.now() + adjusted + FADE_MS;
+          if (Math.abs(mySwap - otherSwap) >= MIN_GAP) break;
+          adjusted = rand(MIN_DELAY, MAX_DELAY);
+        }
+        // final fallback: if still colliding, push just past the conflict with a small random jitter
+        const mySwap = performance.now() + adjusted + FADE_MS;
+        if (Math.abs(mySwap - otherSwap) < MIN_GAP) {
+          adjusted = otherSwap + MIN_GAP + rand(0, 800) - FADE_MS - performance.now();
+        }
+        scheduledAt[key] = performance.now() + adjusted + FADE_MS;
+
+        const fadeTimer = setTimeout(() => {
+          if (!alive) return;
+          setVisible(false);
+          const swapTimer = setTimeout(() => {
+            if (!alive) return;
+            idx = (idx + 1) % length;
+            setIndex(idx);
+            setVisible(true);
+            planNext(rand(MIN_DELAY, MAX_DELAY));
+          }, FADE_MS);
+          cleanups.push(() => clearTimeout(swapTimer));
+        }, adjusted);
+        cleanups.push(() => clearTimeout(fadeTimer));
+      };
+
+      const init = setTimeout(() => planNext(0), initialDelay);
+      cleanups.push(() => clearTimeout(init));
+    }
+
+    schedule("x", setXi, setXVisible, X_WORDS.length, rand(MIN_DELAY, MAX_DELAY));
+    schedule("y", setYi, setYVisible, Y_WORDS.length, rand(MIN_DELAY, MAX_DELAY));
+
+    return () => { alive = false; cleanups.forEach((fn) => fn()); };
+  }, []);
+
   return (
     <h1
       style={{
@@ -128,16 +168,12 @@ export function RotatingHeadline() {
         margin: 0,
       }}
     >
-      Protect <CrossfadeWord words={X_WORDS} interval={3000} />
+      Protect{" "}
+      <Word word={X_WORDS[xi]} visible={xVisible} allWords={X_WORDS} />
       <br />
       from{" "}
-      <CrossfadeWord
-        words={Y_WORDS}
-        interval={3600}
-        initialDelay={900}
-        accentMap={ORANGE_Y}
-      />
-      .
+      <Word word={Y_WORDS[yi]} visible={yVisible} allWords={Y_WORDS} accentMap={ORANGE_Y} />
     </h1>
   );
 }
+

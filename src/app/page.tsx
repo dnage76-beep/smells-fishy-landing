@@ -1,17 +1,25 @@
-import { Nav, Hero, HowItWorks, SocialProof, Privacy, FinalCTA, Footer } from "./components/sections";
-import { PinnedDemo } from "./components/pinned-demo";
-import { LogoMarquee } from "./components/logo-marquee";
+import {
+  Nav,
+  Hero,
+  StakesBand,
+  HowItWorks,
+  DeeperLook,
+  SiriSection,
+  PrivacySection,
+  FinalCTA,
+  Footer,
+} from "./components/site";
 
 export default function Home() {
   return (
-    <div style={{ background: "#000", minHeight: "100vh", color: "#fff" }}>
+    <div style={{ minHeight: "100vh" }}>
       <Nav />
       <Hero />
-      <PinnedDemo />
-      <LogoMarquee />
+      <StakesBand />
       <HowItWorks />
-      <SocialProof />
-      <Privacy />
+      <DeeperLook />
+      <SiriSection />
+      <PrivacySection />
       <FinalCTA />
       <Footer />
     </div>

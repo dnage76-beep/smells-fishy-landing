@@ -1,26 +1,25 @@
 import type { Metadata } from "next";
-import { Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { Fredoka, Inter_Tight } from "next/font/google";
 import "./globals.css";
 
-const display = Inter_Tight({
+const display = Fredoka({
   variable: "--font-display",
   weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
   subsets: ["latin"],
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
-  variable: "--font-mono",
-  weight: ["400", "500"],
+const body = Inter_Tight({
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "SmellsFishy — Protect your family from scams.",
+  title: "Smells Phishy — Check something suspicious",
   description:
-    "SmellsFishy protects you and the people you love from scams, phishing texts, deepfakes, misinformation, and fake headlines.",
+    "Screenshot a text, snap a photo, or paste a message. Smells Phishy points out scam warning signs in plain English, with a clear next step. Private iPhone beta.",
 };
 
 export default function RootLayout({
@@ -29,11 +28,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${display.variable} ${mono.variable} h-full antialiased`}
-    >
-      <body style={{ margin: 0, background: "#000", color: "#fff", fontFamily: '"Inter Tight", system-ui, sans-serif' }}>
+    <html lang="en" className={`${display.variable} ${body.variable} h-full antialiased`}>
+      <body
+        style={{
+          margin: 0,
+          background: "#081433",
+          color: "#F5F0E1",
+          fontFamily: "var(--font-body), system-ui, sans-serif",
+        }}
+      >
         {children}
       </body>
     </html>

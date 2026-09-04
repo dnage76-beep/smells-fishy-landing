@@ -173,3 +173,16 @@ a.store-badge:hover {
   }
 }
 /* rebuild */
+
+/* 2026-08-30 waterline rebuild — responsive rules for the new sections */
+.nav-link:hover { color: #F5F0E1 !important; }
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(255,107,94,0.35); }
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr !important; }
+  .hero-phone { margin-top: 8px; }
+  .card-grid-3 { grid-template-columns: 1fr !important; }
+  .siri-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 640px) {
+  .nav-links { display: none !important; }
+}
