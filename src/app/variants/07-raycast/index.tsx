@@ -195,7 +195,7 @@ function CommandSurface() {
         {/* what came out */}
         <div className="ray-sec" style={{ paddingTop: 16 }}>
           <span>Result</span>
-          <span style={{ color: "#4a5061" }}>7.6s</span>
+          <span style={{ color: "#4a5061" }}>About 8s</span>
         </div>
 
         <div className="ray-row ray-row-sel">
@@ -570,9 +570,9 @@ export function Stakes() {
           </h2>
           <div className="ray-stats">
             {[
-              ["$20.9B", "lost to internet crime in 2025"],
-              ["1,008,597", "complaints filed with the FBI"],
-              ["$7.75B", "taken from people 60 and older"],
+              ["$20.9B", "reported lost to internet crime in 2025"],
+              ["1,008,597", "complaints filed with the FBI in one year"],
+              ["$7.75B", "of it reported by people over 60"],
             ].map(([n, l]) => (
               <div className="ray-stat" key={l}>
                 <b>{n}</b>
