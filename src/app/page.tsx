@@ -1,25 +1,29 @@
+import "./variants/02-linear/linear.css";
 import {
   Nav,
   Hero,
-  StakesBand,
-  HowItWorks,
-  DeeperLook,
-  SiriSection,
-  PrivacySection,
+  Stats,
+  OnePress,
+  TheResult,
+  DeepDive,
+  Privacy,
   FinalCTA,
   Footer,
-} from "./components/site";
+} from "./variants/02-linear/sections";
 
 export default function Home() {
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div className="l-page">
       <Nav />
       <Hero />
-      <StakesBand />
-      <HowItWorks />
-      <DeeperLook />
-      <SiriSection />
-      <PrivacySection />
+      <div className="l-mid">
+        <div className="l-rules l-mid-rules" aria-hidden />
+        <Stats />
+        <OnePress />
+        <TheResult />
+        <DeepDive />
+        <Privacy />
+      </div>
       <FinalCTA />
       <Footer />
     </div>

@@ -1,0 +1,608 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   02-linear — construction copied from Linear.app.
+
+   The rules, in the order Linear applies them:
+     1. Near-black canvas with a faint blue cast. Not #000.
+     2. A very tight type scale. Few sizes, one family, tracking that goes
+        negative as the size goes up. Headlines are weight 600, never 700+,
+        and they carry a vertical white-to-grey gradient fill.
+     3. Hairline borders do ALL the structural work. Shadows are for
+        floating chrome only; a card is a 1px border and a slightly lifted
+        background, nothing else.
+     4. Small radii. 6 / 8 / 12 / 14. Pills exist only for badges.
+     5. One animated gradient mesh behind the hero and behind the closing
+        call to action. The middle of the page stays flat.
+     6. Monospace eyebrow labels above every section headline.
+     7. Motion is 150-220ms, sharp, and never bouncy. Colour and border
+        shifts, not transforms.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --l-bg: #08090a;
+  --l-elev: #0c0d0f;
+  --l-elev-2: #111214;
+  --l-line: rgba(255, 255, 255, 0.075);
+  --l-line-2: rgba(255, 255, 255, 0.13);
+  --l-text: #f2eee3;
+  --l-text-2: #8a8f98;
+  --l-text-3: #767b84;
+  --l-accent: #1c5cf7;
+  --l-accent-2: #6e8bff;
+  --l-coral: #ff6b5e;
+  --l-pad: clamp(20px, 4vw, 40px);
+  --l-shell: 1120px;
+  --l-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --l-sans: var(--font-body), "Inter Tight", Inter, -apple-system, system-ui, sans-serif;
+  --l-display: var(--font-display), ui-rounded, system-ui, sans-serif;
+}
+
+.l-page {
+  position: relative;
+  min-height: 100vh;
+  background: var(--l-bg);
+  color: var(--l-text);
+  font-family: var(--l-sans);
+  overflow-x: clip;
+  font-feature-settings: "cv05" 1, "ss03" 1;
+}
+
+/* ── the gradient mesh ───────────────────────────────────────────────────
+   Confined to the hero and the closing CTA. Very low contrast against the
+   canvas: it should read as a glow you cannot quite locate, not as colour. */
+
+.l-mesh {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.l-mesh-blob {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+}
+
+.l-m1 {
+  left: 50%;
+  top: -46%;
+  width: 132%;
+  height: 128%;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(28, 92, 247, 0.46), rgba(28, 92, 247, 0) 100%);
+  animation: lBreatheA 26s ease-in-out infinite alternate;
+}
+.l-m2 {
+  left: 6%;
+  top: -14%;
+  width: 62%;
+  height: 92%;
+  background: radial-gradient(closest-side, rgba(94, 106, 210, 0.5), rgba(94, 106, 210, 0) 100%);
+  animation: lBreatheB 34s ease-in-out infinite alternate;
+}
+.l-m3 {
+  right: 2%;
+  top: -10%;
+  width: 56%;
+  height: 82%;
+  background: radial-gradient(closest-side, rgba(72, 167, 248, 0.36), rgba(72, 167, 248, 0) 100%);
+  animation: lBreatheC 41s ease-in-out infinite alternate;
+}
+.l-m4 {
+  left: 30%;
+  top: 24%;
+  width: 46%;
+  height: 60%;
+  background: radial-gradient(closest-side, rgba(255, 107, 94, 0.16), rgba(255, 107, 94, 0) 100%);
+  animation: lBreatheB 47s ease-in-out infinite alternate;
+}
+
+@keyframes lBreatheA {
+  from { transform: translateX(-50%) scale(1); opacity: 0.85; }
+  to   { transform: translateX(-50%) scale(1.16) translateY(4%); opacity: 1; }
+}
+@keyframes lBreatheB {
+  from { transform: scale(1) translate(0, 0); opacity: 0.7; }
+  to   { transform: scale(1.2) translate(6%, 5%); opacity: 1; }
+}
+@keyframes lBreatheC {
+  from { transform: scale(1.14) translate(0, 4%); opacity: 1; }
+  to   { transform: scale(0.94) translate(-6%, -3%); opacity: 0.7; }
+}
+
+/* the mesh is clipped by its section, so its edges are faded back into the
+   canvas rather than cut */
+.l-fade-top,
+.l-fade-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+.l-fade-top {
+  top: 0;
+  height: 190px;
+  background: linear-gradient(180deg, var(--l-bg) 0%, rgba(8, 9, 10, 0) 100%);
+}
+.l-fade-bottom {
+  bottom: 0;
+  height: 230px;
+  background: linear-gradient(0deg, var(--l-bg) 0%, rgba(8, 9, 10, 0) 100%);
+}
+
+/* the horizon: a hairline of light where the mesh meets the flat canvas */
+.l-mesh-horizon {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(150, 178, 255, 0.42) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.l-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+  background-size: 120px 120px;
+}
+
+/* ── layout ─────────────────────────────────────────────────────────────── */
+
+.l-sec {
+  position: relative;
+  padding-left: var(--l-pad) !important;
+  padding-right: var(--l-pad) !important;
+}
+
+.l-shell {
+  width: 100%;
+  max-width: var(--l-shell);
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Linear runs faint vertical rules down the container edges through the
+   flat middle of the page, so the grid is visible without being drawn. */
+.l-rules {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.l-rules::before,
+.l-rules::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.09) 10%,
+    rgba(255, 255, 255, 0.09) 90%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+.l-rules::before { left: 0; }
+.l-rules::after { right: 0; }
+
+/* the page grid: rules sit just outside the content column, through the flat
+   middle of the page only */
+.l-mid { position: relative; }
+.l-mid-rules {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100% - 16px), calc(var(--l-shell) + 128px));
+  pointer-events: none;
+  z-index: 0;
+}
+@media (max-width: 1340px) {
+  .l-mid-rules { display: none; }
+}
+
+/* ── type ───────────────────────────────────────────────────────────────── */
+
+.l-h1 {
+  font-size: clamp(40px, 5.8vw, 74px) !important;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.036em;
+  margin: 0;
+  background: linear-gradient(176deg, #fbf8f0 26%, rgba(230, 226, 214, 0.74) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-wrap: balance;
+}
+
+.l-h2 {
+  font-size: clamp(27px, 3.1vw, 40px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.026em;
+  margin: 0;
+  background: linear-gradient(176deg, #f7f4ea 32%, rgba(230, 226, 214, 0.76) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-wrap: balance;
+}
+
+.l-h3 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.014em;
+  line-height: 1.3;
+  margin: 0;
+  color: var(--l-text);
+}
+
+.l-eyebrow {
+  font-family: var(--l-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--l-text-3);
+  margin: 0 0 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.l-eyebrow::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  max-width: 120px;
+  background: linear-gradient(90deg, var(--l-line-2), rgba(255, 255, 255, 0));
+}
+
+.l-lede {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--l-text-2);
+  margin: 0;
+  letter-spacing: -0.005em;
+}
+
+.l-meta {
+  font-family: var(--l-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--l-text-3);
+}
+
+/* ── buttons ────────────────────────────────────────────────────────────── */
+
+.l-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 9px;
+  font-size: 15px;
+  font-weight: 550;
+  letter-spacing: -0.008em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    color 160ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.l-btn--primary {
+  background: var(--l-accent);
+  color: #fff;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+}
+.l-btn--primary:hover { background: #2f6bff; }
+
+.l-btn--ghost {
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--l-text);
+  border: 1px solid var(--l-line-2);
+}
+.l-btn--ghost:hover { background: rgba(255, 255, 255, 0.075); border-color: rgba(255, 255, 255, 0.22); }
+
+.l-btn--sm { height: 34px; padding: 0 14px; font-size: 13.5px; border-radius: 8px; }
+
+/* ── nav ────────────────────────────────────────────────────────────────── */
+
+.l-nav {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: rgba(8, 9, 10, 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--l-line);
+  padding: 0 var(--l-pad) !important;
+}
+@supports not ((-webkit-backdrop-filter: blur(2px)) or (backdrop-filter: blur(2px))) {
+  .l-nav { background: #08090a; }
+}
+
+.l-nav-inner {
+  max-width: var(--l-shell);
+  margin: 0 auto;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.l-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-right: auto;
+  margin-left: 40px;
+}
+.l-nav-links a {
+  color: var(--l-text-2);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.004em;
+  transition: color 160ms ease;
+}
+.l-nav-links a:hover { color: var(--l-text); }
+
+/* ── badge pill ─────────────────────────────────────────────────────────── */
+
+.l-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 30px;
+  padding: 0 12px 0 5px;
+  border-radius: 999px;
+  border: 1px solid var(--l-line-2);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 13px;
+  color: var(--l-text-2);
+  text-decoration: none;
+  letter-spacing: -0.004em;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+.l-pill:hover { border-color: rgba(255, 255, 255, 0.24); color: var(--l-text); }
+.l-pill-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(28, 92, 247, 0.9);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* ── panels: a border and a lift, no shadow ─────────────────────────────── */
+
+.l-panel {
+  position: relative;
+  border: 1px solid var(--l-line);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012) 40%, rgba(255, 255, 255, 0.006)),
+    var(--l-elev);
+  overflow: hidden;
+}
+.l-panel::before {
+  content: "";
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.l-panel-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 18px;
+  height: 46px;
+  border-bottom: 1px solid var(--l-line);
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.l-row {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 13px 0;
+  border-top: 1px solid var(--l-line);
+}
+.l-row:first-child { border-top: 0; }
+
+.l-key {
+  font-family: var(--l-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--l-text-3);
+  width: 92px;
+  flex-shrink: 0;
+}
+.l-val { font-size: 14.5px; color: var(--l-text); letter-spacing: -0.006em; }
+
+/* ── hairline-divided cell rows ─────────────────────────────────────────── */
+
+.l-cells {
+  display: grid;
+  border: 1px solid var(--l-line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--l-elev);
+}
+.l-cell {
+  padding: 24px 22px 26px;
+  border-left: 1px solid var(--l-line);
+  transition: background 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.l-cell:first-child { border-left: 0; }
+.l-cell:hover { background: rgba(255, 255, 255, 0.022); }
+
+/* the inner stage a product screenshot bleeds out of */
+.l-stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 24px 0;
+  max-height: 496px;
+  overflow: hidden;
+  background: radial-gradient(110% 76% at 50% 0%, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0) 72%);
+}
+.l-stage::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 84px;
+  background: linear-gradient(180deg, rgba(12, 13, 15, 0) 0%, rgba(12, 13, 15, 0.9) 78%, var(--l-elev) 100%);
+  pointer-events: none;
+}
+
+/* input beside output, the way Linear puts two panes of real UI in one frame */
+.l-stage-cols {
+  display: flex;
+  gap: clamp(20px, 3vw, 44px);
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+}
+.l-source {
+  width: 300px;
+  flex-shrink: 0;
+  padding-right: clamp(20px, 3vw, 44px);
+  border-right: 1px solid var(--l-line);
+}
+.l-bubble {
+  border: 1px solid var(--l-line);
+  background: var(--l-elev-2);
+  border-radius: 4px 14px 14px 14px;
+  padding: 13px 15px 14px;
+  font-size: 14px;
+  line-height: 1.52;
+  color: var(--l-text);
+  letter-spacing: -0.006em;
+}
+@media (max-width: 760px) {
+  .l-source { display: none; }
+}
+
+/* ── the phone, in Linear's frame ───────────────────────────────────────── */
+
+.l-phone {
+  width: 300px;
+  border-radius: 40px;
+  padding: 9px;
+  background: linear-gradient(170deg, #303339, #16181b 46%, #24272c);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.09), 0 30px 60px -28px rgba(0, 0, 0, 0.9);
+  flex-shrink: 0;
+}
+.l-screen {
+  border-radius: 32px;
+  overflow: hidden;
+  background: #eef1f7;
+  color: #0a1f45;
+  text-align: left;
+}
+
+/* ── misc ───────────────────────────────────────────────────────────────── */
+
+.l-link {
+  color: var(--l-accent-2);
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 500;
+  transition: color 160ms ease;
+}
+.l-link:hover { color: #a5bcff; }
+
+.l-hr {
+  height: 1px;
+  background: var(--l-line);
+  border: 0;
+  margin: 0;
+}
+
+.l-foot-links a {
+  display: block;
+  color: var(--l-text-2);
+  text-decoration: none;
+  font-size: 13.5px;
+  padding: 5px 0;
+  transition: color 160ms ease;
+}
+.l-foot-links a:hover { color: var(--l-text); }
+
+/* ── responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 1000px) {
+  .l-hero-surface-grid { grid-template-columns: 1fr !important; }
+  .l-stage { max-height: 430px; padding-top: 36px; }
+  .l-hero-rail { border-left: 0 !important; border-top: 1px solid var(--l-line) !important; }
+  .l-split { grid-template-columns: 1fr !important; gap: 32px !important; }
+}
+
+@media (max-width: 860px) {
+  .l-cells--4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .l-cells--4 > .l-cell:nth-child(3) { border-left: 0; }
+  .l-cells--4 > .l-cell:nth-child(n + 3) { border-top: 1px solid var(--l-line); }
+  .l-cells--3 { grid-template-columns: 1fr !important; }
+  .l-cells--3 > .l-cell { border-left: 0; border-top: 1px solid var(--l-line); }
+  .l-cells--3 > .l-cell:first-child { border-top: 0; }
+  .l-foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 32px !important; }
+}
+
+@media (max-width: 800px) {
+  .l-nav-links { display: none !important; }
+}
+
+@media (max-width: 640px) {
+  .l-sec { padding-left: 18px !important; padding-right: 18px !important; }
+  .l-nav { padding-left: 18px !important; padding-right: 18px !important; }
+  .l-h1 { font-size: clamp(34px, 9.6vw, 46px) !important; letter-spacing: -0.032em; }
+  .l-phone { width: min(288px, 100%); }
+  .l-stage { padding-left: 12px; padding-right: 12px; }
+  .l-cells--4 { grid-template-columns: 1fr !important; }
+  .l-cells--4 > .l-cell { border-left: 0; border-top: 1px solid var(--l-line); }
+  .l-cells--4 > .l-cell:first-child { border-top: 0; }
+  .l-cta-row { flex-direction: column !important; align-items: stretch !important; }
+  .l-cta-row > a { width: 100%; }
+  .l-stats { grid-template-columns: 1fr !important; }
+  .l-stat { border-left: 0 !important; border-top: 1px solid var(--l-line); }
+  .l-stat:first-child { border-top: 0; }
+  .l-foot-grid { grid-template-columns: 1fr !important; }
+  .l-rules { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .l-mesh-blob { animation: none !important; }
+}
