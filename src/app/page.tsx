@@ -1,27 +1,5 @@
-import {
-  Nav,
-  Hero,
-  StakesBand,
-  HowItWorks,
-  DeeperLook,
-  SiriSection,
-  PrivacySection,
-  FinalCTA,
-  Footer,
-} from "./components/site";
+import NotionLanding from "./variants/10-notion";
 
 export default function Home() {
-  return (
-    <div style={{ minHeight: "100vh" }}>
-      <Nav />
-      <Hero />
-      <StakesBand />
-      <HowItWorks />
-      <DeeperLook />
-      <SiriSection />
-      <PrivacySection />
-      <FinalCTA />
-      <Footer />
-    </div>
-  );
+  return <NotionLanding />;
 }
