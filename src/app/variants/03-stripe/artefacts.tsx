@@ -59,7 +59,7 @@ export function VerdictStack() {
             Result · example
           </span>
           <span className="sp-mono" style={{ color: "#8b9bb2" }}>
-            8.2s
+            About 8s
           </span>
         </div>
 
@@ -157,10 +157,10 @@ function Block({ label, children, last = false }: { label: string; children: Rea
 /* ------------------------------------------------------------------ */
 
 const STEPS: [string, string, string][] = [
-  ["01", "Press", "0.0s"],
-  ["02", "Read the screen", "0.3s"],
-  ["03", "Check the signals", "~8s"],
-  ["04", "Verdict", "done"],
+  ["01", "Press", "start"],
+  ["02", "Read the screen", "device"],
+  ["03", "Check the signals", "server"],
+  ["04", "Verdict", "about 8s"],
 ];
 
 export function PressPanel() {
@@ -207,7 +207,7 @@ export function PressPanel() {
             >
               <span style={{ fontFamily: MONO, fontSize: 11, color: "rgba(200,219,250,0.42)" }}>{n}</span>
               <span style={{ flex: 1, fontSize: 14.5, color: "#e7eefc", letterSpacing: "-0.01em" }}>{label}</span>
-              <span style={{ fontFamily: MONO, fontSize: 11, color: i === 2 ? "#7cc2fb" : "rgba(200,219,250,0.42)" }}>{t}</span>
+              <span style={{ fontFamily: MONO, fontSize: 11, color: i === 3 ? "#7cc2fb" : "rgba(200,219,250,0.42)" }}>{t}</span>
             </div>
           ))}
         </div>

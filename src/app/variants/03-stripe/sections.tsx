@@ -291,7 +291,7 @@ export function OnePress() {
                 <>
                   It starts with a button
                   <br />
-                  you already have.
+                  or a tap on the back.
                 </>
               }
               body="Point the Action Button or a Back Tap at Smells Phishy. Screenshot the message, press once, and the check runs. Nothing to copy, nothing to paste, no app to go hunting for."
