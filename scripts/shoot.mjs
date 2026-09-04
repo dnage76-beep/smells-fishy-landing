@@ -1,10 +1,39 @@
 // Screenshot a running variant at three widths.
-//   NODE_PATH=$(npm root -g) node scripts/shoot.mjs <url> <outDir> <name>
+//   node scripts/shoot.mjs <url> <outDir> <name>
+//
+// Resolves puppeteer from the global install (NODE_PATH does NOT work for
+// ESM imports, which is why the first run of this script failed for every
+// agent) and drives the copy of Chrome that is actually on this Mac, since
+// puppeteer's own browser was never downloaded. Puppeteer uses a throwaway
+// profile, so Derek's Chrome profile is untouched.
+//
+// Shoot the PRODUCTION server (npx next start), not npm run dev: the dev
+// build paints a floating dev-tools badge into the corner of every frame.
 // Writes <outDir>/<name>-desktop.png (1440x900, full page), -tablet.png
 // (834x1112) and -mobile.png (390x844). Full-page desktop shot is the one
 // Derek judges the design by.
-import puppeteer from "puppeteer";
+import { createRequire } from "node:module";
+import { execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
+
+function loadPuppeteer() {
+  const require = createRequire(import.meta.url);
+  try {
+    return require("puppeteer");
+  } catch {
+    const globalRoot = execFileSync("npm", ["root", "-g"], { encoding: "utf8" }).trim();
+    return createRequire(`${globalRoot}/`)("puppeteer");
+  }
+}
+
+function chromePath() {
+  if (process.env.PUPPETEER_EXECUTABLE_PATH) return process.env.PUPPETEER_EXECUTABLE_PATH;
+  const installed = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  return existsSync(installed) ? installed : undefined;
+}
+
+const puppeteer = loadPuppeteer();
 
 const [url, outDir, name] = process.argv.slice(2);
 if (!url || !outDir || !name) {
@@ -14,6 +43,7 @@ if (!url || !outDir || !name) {
 await mkdir(outDir, { recursive: true });
 const browser = await puppeteer.launch({
   headless: "new",
+  executablePath: chromePath(),
   args: ["--no-sandbox", "--force-color-profile=srgb", "--font-render-hinting=none"],
 });
 const sizes = [
