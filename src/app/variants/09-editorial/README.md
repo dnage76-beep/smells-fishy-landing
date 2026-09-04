@@ -67,5 +67,9 @@ marketing bands.
   dropped at phone width where it would produce rivers, the masthead stacks,
   and the keyed legend goes from an outer column to a row to a list.
 - No console errors, no horizontal overflow at any of the three widths.
-- Verdict language is the app's own hedged set. The IC3 figures are cited and
-  linked. No badges, no testimonials, no invented numbers.
+- Verdict language is the app's own hedged set. Claims follow
+  `VERIFIED_CLAIMS.md`: the IC3 figures use the exact approved wording with
+  the "reported" caveat and a link to the report, and the privacy note says
+  no account is required, that signing in with Apple or Google is optional,
+  and that signing in gives us only a first name and an email address. No
+  badges, no testimonials, no invented numbers.

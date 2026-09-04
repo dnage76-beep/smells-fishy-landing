@@ -273,16 +273,16 @@
 /* sidebar table */
 .ed-side { grid-column: 10 / span 3; }
 .ed-side-box { border-top: 3px solid var(--ink); padding-top: 12px; }
-.ed-stat { display: flex; align-items: baseline; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--hair); }
+.ed-stat { display: flex; align-items: baseline; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--hair); }
 .ed-stat .n {
   font-family: var(--serif);
   font-weight: 600;
-  font-size: clamp(21px, 2vw, 27px);
+  font-size: clamp(19px, 1.7vw, 24px);
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
   white-space: nowrap;
 }
-.ed-stat .l { font-size: 12.5px; line-height: 1.35; color: var(--ink-2); }
+.ed-stat .l { font-size: 12px; line-height: 1.4; color: var(--ink-2); }
 .ed-src { margin-top: 11px; font-size: 11px; line-height: 1.5; color: var(--ink-2); }
 .ed-src a { color: var(--ink-2); }
 
@@ -426,7 +426,7 @@
 .ed-note { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; padding: 15px 0; border-top: 1px solid var(--hair); }
 .ed-note:last-child { border-bottom: 1px solid var(--hair); }
 .ed-note .k { font-family: var(--serif); font-size: 17px; font-weight: 600; color: var(--coral); line-height: 1.2; }
-.ed-note h4 { margin: 0 0 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.17em; text-transform: uppercase; }
+.ed-note h3 { margin: 0 0 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.17em; text-transform: uppercase; }
 .ed-note p { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
 
 /* --- IV. dark spread --------------------------------------------------- */
@@ -486,7 +486,7 @@
 .ed-pcol { padding: 0 clamp(14px, 2vw, 28px); border-left: 1px solid var(--hair); }
 .ed-pcol:first-child { padding-left: 0; border-left: 0; }
 .ed-pcol:last-child { padding-right: 0; }
-.ed-pcol h4 { margin: 0 0 8px; font-family: var(--serif); font-size: clamp(18px, 1.7vw, 22px); font-weight: 500; line-height: 1.15; }
+.ed-pcol h3 { margin: 0 0 8px; font-family: var(--serif); font-size: clamp(18px, 1.7vw, 22px); font-weight: 500; line-height: 1.15; }
 .ed-pcol p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
 .ed-ledger { margin-top: clamp(20px, 2.4vw, 32px); border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 0 clamp(20px, 3vw, 46px); padding-top: 14px; }
 .ed-ledger div { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; }

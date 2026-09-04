@@ -231,9 +231,9 @@ function Opening() {
 
 function Problem() {
   const stats: [string, string][] = [
-    ["$20.9B", "lost to internet crime in 2025"],
-    ["1,008,597", "complaints to the FBI in one year"],
-    ["$7.75B", "taken from people 60 and older"],
+    ["$20.9B", "reported lost to internet crime in 2025"],
+    ["1,008,597", "complaints filed with the FBI in one year"],
+    ["$7.75B", "of it reported by people over 60"],
   ];
   return (
     <section id="problem" className="ed-article">
@@ -507,7 +507,7 @@ function Anatomy() {
             <div className="ed-note" key={k}>
               <span className="k">{k}</span>
               <div>
-                <h4>{t}</h4>
+                <h3>{t}</h3>
                 <p>{b}</p>
               </div>
             </div>
@@ -561,14 +561,14 @@ function PrivacyNote() {
       "Results live on the device, protected by iOS. Delete any check, or all of them.",
     ],
     [
-      "No account, no tracking.",
-      "An anonymous device key prevents abuse. No ads. No data sold.",
+      "No account required.",
+      "An anonymous device key enforces the daily limit. Signing in with Apple or Google is optional, and gives us only a first name and an email address.",
     ],
   ];
   const ledger: [string, string][] = [
     ["10", "free checks a day"],
-    ["0", "accounts required"],
     ["0", "ads, 0 data sold"],
+    ["0", "tracking across other apps"],
     ["100%", "of saved checks stay on the phone"],
   ];
   return (
@@ -580,7 +580,7 @@ function PrivacyNote() {
           <div className="ed-pcols">
             {cols.map(([t, b]) => (
               <div className="ed-pcol" key={t}>
-                <h4>{t}</h4>
+                <h3>{t}</h3>
                 <p>{b}</p>
               </div>
             ))}
@@ -622,7 +622,7 @@ function ReplyCard() {
           <a className="ed-btn" href={BETA}>
             Request an invite
           </a>
-          <p className="fine">Ten checks a day. No account. Nothing to cancel.</p>
+          <p className="fine">Ten checks a day. No account required. Sign in only if you want to.</p>
         </div>
       </div>
     </section>
