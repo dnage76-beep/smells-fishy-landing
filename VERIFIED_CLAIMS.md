@@ -39,6 +39,35 @@ any of it.
   optional Apple and Google sign-in, do not write that the app "has no
   accounts" or "cannot have your email".
 
+## Wording rules an independent review had to catch
+
+Checked by Codex on 2026-09-04 across all ten variants. Every one of these
+was violated at least once, so they are written down rather than assumed.
+
+- **Never sharpen the timing.** "About eight seconds" is the claim. A
+  product mock showing "8.2s", "7.6s", "0.3s" or any other exact figure
+  invents a measurement we do not have. Use qualitative stages and one
+  approximate total.
+- **"Reported" belongs inside the claim, not in a heading above it.**
+  "$20.9B lost to internet crime" is wrong even under a heading that says
+  reported figures. Write "reported lost".
+- **No numeric absolutes for privacy.** "0 ads, 0 data sold", "100% of
+  history on your phone" and "0 accounts required" are numbers that are
+  not in this file. The underlying facts are true; write them as prose.
+- **No universal claims.** "It cannot know that, and neither can anything
+  else" is indefensible.
+- **The Action Button is not on every iPhone.** It exists on supported
+  models only; Back Tap is the broader fallback. Do not write that the app
+  runs off a button the reader's phone already has.
+- **Do not say content never leaves the phone.** It travels to our server
+  and to Google's Gemini for the check itself. Saved history stays local.
+  Those are different statements.
+
+"Looks like a scam" is APPROVED and is not an exception to any of this: it
+is the app's own high-risk headline in the backend's VERDICT_LANGUAGE.md
+tone ladder, which reads "looks like" as identification rather than a
+verdict on truth. Codex flagged it; the style guide overrules.
+
 ## Never
 
 Accuracy rates, detection percentages, user counts, testimonials, press
