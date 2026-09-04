@@ -486,7 +486,7 @@ function Hero() {
               iPhone private beta
             </Chip>
             <Chip bg="rgba(10,31,69,0.06)" color={C.ink}>
-              No account
+              No account required
             </Chip>
             <Chip bg="rgba(10,31,69,0.06)" color={C.ink}>
               History stays on the phone
@@ -905,10 +905,11 @@ function DeepDive() {
 
 /* ----------------------------------------------------------------- stats */
 
+// Every figure and its wording is fixed by VERIFIED_CLAIMS.md.
 const STATS: [string, string][] = [
-  ["$20.9B", "lost to internet crime in 2025"],
-  ["1,008,597", "complaints to the FBI in one year"],
-  ["$7.75B", "taken from people 60 and older"],
+  ["$20.9B", "reported lost to internet crime in 2025"],
+  ["1,008,597", "complaints filed with the FBI in one year"],
+  ["$7.75B", "of it reported by people over 60"],
 ];
 
 function Stakes() {
@@ -976,12 +977,15 @@ function Stakes() {
 const PROMISES: [string, string][] = [
   ["You approve every send", "The check runs on our server and Google's Gemini. Content is used for that check, then not kept."],
   ["History stays on the phone", "Results live on your iPhone, protected by iOS. Delete one, or delete all of them."],
-  ["No account, no tracking", "An anonymous device key stops abuse. No ads. Nothing sold."],
+  [
+    "No account required",
+    "An anonymous device key stops abuse. Signing in with Apple or Google is optional; do it and the provider gives us a first name and an email address. No ads. Nothing sold.",
+  ],
 ];
 
 const NUMS: [string, string][] = [
   ["10", "free checks a day"],
-  ["0", "accounts"],
+  ["0", "accounts required"],
   ["0", "ads or data sold"],
   ["100%", "of saved checks on your iPhone"],
 ];

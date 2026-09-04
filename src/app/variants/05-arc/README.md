@@ -62,6 +62,10 @@ Devices borrowed, one for one:
   plausible-looking citations would be a fabricated claim, so the rows read
   "Public news reporting", "Consumer protection notice", "The company's own
   page".
+- **Account language is hedged, not absolute.** The app gained optional Apple
+  and Google sign-in, so the page says "No account required" and the privacy
+  panel spells out what a provider hands over when someone does sign in. Every
+  figure on the page and its wording come from `VERIFIED_CLAIMS.md`.
 
 ## Brand rules bent
 
