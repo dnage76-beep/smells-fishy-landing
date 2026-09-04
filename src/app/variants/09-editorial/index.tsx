@@ -179,7 +179,7 @@ function Opening() {
             <span className="ed-label">iPhone · private beta</span>
           </div>
           <h1 className="ed-h1">
-            Eight seconds
+            About 8 seconds
             <br className="ed-br-lg" /> with a <em>suspicious</em>
             <br className="ed-br-lg" /> message.
           </h1>
@@ -497,8 +497,8 @@ function Anatomy() {
           <figcaption style={{ marginTop: 14 }}>
             <span className="ed-fignum">Fig. 3</span>{" "}
             <span className="ed-cap">
-              A result at full size. Every check is written to the phone, and to
-              nowhere else.
+              A result at full size. The check runs on our server; the saved copy
+              stays on the phone.
             </span>
           </figcaption>
         </figure>
@@ -567,9 +567,9 @@ function PrivacyNote() {
   ];
   const ledger: [string, string][] = [
     ["10", "free checks a day"],
-    ["0", "ads, 0 data sold"],
-    ["0", "tracking across other apps"],
-    ["100%", "of saved checks stay on the phone"],
+    ["No ads", "and nothing sold"],
+    ["No tracking", "across other apps"],
+    ["On the phone", "every saved check"],
   ];
   return (
     <section id="privacy" className="ed-privacy">
