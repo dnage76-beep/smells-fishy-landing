@@ -312,7 +312,7 @@ export function OnePress() {
       glyph: <ActionButtonGlyph />,
       kicker: "Action Button",
       title: "Hold the button",
-      body: "The one on the side of your iPhone. Set it once, then it is the only step.",
+      body: "On iPhones that have one, set it once and the press is the only step.",
     },
     {
       glyph: <BackTapGlyph />,
@@ -334,7 +334,7 @@ export function OnePress() {
         <div className="g-onfield" style={{ maxWidth: 720 }}>
           <Eyebrow>One press</Eyebrow>
           <h2 className="g-h2" style={{ margin: "20px 0 0", color: CREAM }}>
-            It runs off a button your phone already has.
+            It runs off the Action Button, or a tap on the back.
           </h2>
           <p className="g-lede" style={{ margin: "16px 0 0", maxWidth: 520 }}>
             Nothing to open, nothing to paste. Screenshot the thing, then press.
@@ -633,8 +633,8 @@ export function Privacy() {
   ];
   const counts: [string, string][] = [
     ["10", "free checks a day"],
-    ["0", "ads, 0 data sold"],
-    ["100%", "of history on your phone"],
+    ["No ads", "and nothing about you is sold"],
+    ["No tracking", "across other apps or websites"],
   ];
 
   return (

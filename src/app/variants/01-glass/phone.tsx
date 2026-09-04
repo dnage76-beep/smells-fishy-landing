@@ -60,7 +60,7 @@ export function Phone() {
                 padding: "3px 9px",
               }}
             >
-              8.2s
+              About 8s
             </div>
           </div>
 
