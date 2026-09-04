@@ -640,12 +640,24 @@
   .g-flip-media { order: 0; }
 }
 
+/* three-up survives down to a real tablet; the cells just tighten */
+@media (max-width: 1024px) {
+  .g-strip-cell { padding: 24px 20px 26px; }
+  .g-stat-cell { padding: 22px 20px 24px !important; }
+}
+
 @media (max-width: 860px) {
+  .g-promise-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 760px) {
   .g-strip { grid-template-columns: 1fr !important; }
   .g-strip-cell + .g-strip-cell { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12); }
+}
+
+@media (max-width: 700px) {
   .g-stat-rail { grid-template-columns: 1fr !important; }
   .g-stat-cell + .g-stat-cell { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12) !important; }
-  .g-promise-grid { grid-template-columns: 1fr !important; }
 }
 
 @media (max-width: 720px) {

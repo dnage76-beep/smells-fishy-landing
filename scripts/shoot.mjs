@@ -63,17 +63,22 @@ for (const [label, width, height, full] of sizes) {
   await page.evaluate(() => document.fonts.ready);
   await new Promise((r) => setTimeout(r, 1500));
   if (full) {
-    // Two things go wrong with a naive full-page shot of a long, effect-heavy
-    // page. Puppeteer's default (captureBeyondViewport) rasterises past the
-    // viewport without compositing backdrop-filter, so translucent panels come
-    // out empty; and a 2x raster of a several-thousand-pixel page blows the
-    // compositor's tile budget on a small machine, which drops whole bands of
-    // content. So: grow the viewport to the document, keep the raster under a
-    // safe pixel budget, and give it a beat to settle before the shutter.
+    // Two things go wrong with a naive full-page shot of a long page that uses
+    // backdrop-filter or filter. Puppeteer's default (captureBeyondViewport)
+    // rasterises past the viewport WITHOUT compositing those layers, so every
+    // translucent panel below the fold comes out empty. And a 2x raster of a
+    // several-thousand-pixel page overruns the compositor's tile budget on this
+    // Mac, which drops whole bands of content (and past 16384px in either
+    // dimension it cannot allocate the texture at all). So: grow the viewport
+    // to the document, keep the raster inside a safe budget, and give it a beat
+    // to settle before the shutter.
     const docHeight = await page.evaluate(() => document.documentElement.scrollHeight);
     const pageHeight = Math.min(docHeight, 30000);
     const budget = 16e6;
-    const scale = [2, 1.5, 1].find((s) => width * s * pageHeight * s <= budget) ?? 1;
+    const scale =
+      [2, 1.5, 1].find(
+        (s) => width * s * pageHeight * s <= budget && pageHeight * s <= 16000,
+      ) ?? 1;
     await page.setViewport({ width, height: pageHeight, deviceScaleFactor: scale });
     await new Promise((r) => setTimeout(r, 1200));
   }
