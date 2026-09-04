@@ -229,7 +229,7 @@ export function TheResult() {
                   background: "var(--raised)",
                 }}
               >
-                <span className="gs-mono gs-mono-sm">Elapsed 8.2s</span>
+                <span className="gs-mono gs-mono-sm">Elapsed about 8s</span>
                 <span className="gs-mono gs-mono-sm">Example result</span>
               </div>
             </div>
@@ -254,7 +254,7 @@ export function OnePress() {
       <div className="gs-frame">
         <Head index="03" name="One press" meta="Three ways in" />
         <div className="gs-pad gs-rv" style={{ paddingTop: 48, paddingBottom: 40 }}>
-          <h2 className="gs-h2">Three ways in. The same eight seconds.</h2>
+          <h2 className="gs-h2">Three ways in. About eight seconds each.</h2>
           <p className="gs-p" style={{ marginTop: 18, maxWidth: "52ch" }}>
             Point the Action Button or a Back Tap at Smells Phishy, or share a
             screenshot from anywhere. Nothing to copy, nothing to paste.
