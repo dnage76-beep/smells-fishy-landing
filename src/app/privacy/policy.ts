@@ -1,7 +1,7 @@
 // Mirrors the in-app policy (app repo: Domain/PrivacyPolicy.swift).
 // Update both together — every claim must stay true to actual behavior.
 
-export const EFFECTIVE_DATE = "August 31, 2026";
+export const EFFECTIVE_DATE = "September 5, 2026";
 export const CONTACT_EMAIL = "dnage76@gmail.com";
 
 export const POLICY_SECTIONS: { title: string; body: string }[] = [
@@ -43,6 +43,6 @@ export const POLICY_SECTIONS: { title: string; body: string }[] = [
   },
   {
     title: "Changes and contact",
-    body: `If this policy changes, the app will tell you before the new version applies. Questions: ${CONTACT_EMAIL}. Effective ${EFFECTIVE_DATE}.`,
+    body: `When this policy changes, the effective date changes with it, and the current text is always the one shown here and in the app. Questions: ${CONTACT_EMAIL}. Effective ${EFFECTIVE_DATE}.`,
   },
 ];
