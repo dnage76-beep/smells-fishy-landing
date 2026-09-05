@@ -7,7 +7,7 @@ export const CONTACT_EMAIL = "dnage76@gmail.com";
 export const POLICY_SECTIONS: { title: string; body: string }[] = [
   {
     title: "What happens to what you submit",
-    body: "When you check a screenshot, photo, or pasted text, that content is sent over an encrypted connection to our server. Our server passes it to Google's Gemini AI service, which analyzes it and returns the assessment. Your content is used only to run that check. Our server does not store the screenshot or text after the check completes. Google processes it under its own API terms, which we do not control. Screenshots can contain personal information, so check only what you are comfortable sending.",
+    body: "When you check a screenshot, photo, or pasted text, that content is sent over an encrypted connection to our server. Our server passes it to Google's Gemini AI service, which analyzes it and returns the assessment. Your content is used only to run that check. Our server does not store the screenshot or text after the check completes, unless you later choose to share the result (see Sharing a result). Google processes it under its own API terms, which we do not control. Screenshots can contain personal information, so check only what you are comfortable sending.",
   },
   {
     title: "Deciding not to send",
@@ -23,11 +23,15 @@ export const POLICY_SECTIONS: { title: string; body: string }[] = [
   },
   {
     title: "No account required",
-    body: `The app uses a random, anonymous device key (stored in your iPhone's Keychain) to prevent abuse and enforce fair-use limits. On its own it is not connected to your name, email, or phone number. Our server keeps a record of the device (the key and your iPhone's vendor identifier) and, for each check, which device asked, the date and time, the risk level, and the number of tokens the AI processed. It never keeps the content of a check. To have that device record deleted, email ${CONTACT_EMAIL}.`,
+    body: `The app uses a random, anonymous device key (stored in your iPhone's Keychain) to prevent abuse and enforce fair-use limits. On its own it is not connected to your name, email, or phone number. Our server keeps a record of the device (the key and your iPhone's vendor identifier) and, for each check, which device asked, the date and time, the risk level, and the number of tokens the AI processed. It never keeps the content of a check, except the image of a result you choose to share, described below. To have that device record deleted, email ${CONTACT_EMAIL}.`,
   },
   {
     title: "If you choose to sign in",
     body: `Signing in is optional and everything works without it. If you do sign in with Apple or Google, our sign-in provider Clerk handles it and gives us your first name and the email address for the account. We show them in Account and use the name to greet you. This iPhone's device record is then linked to that account, so your checks and Deep Dives stay yours. Sign in with Apple can hide your real address behind a private relay if you prefer. You can delete the account from Account then Delete Account, which removes the account and its data and returns this iPhone to anonymous; your saved history on the iPhone is untouched.`,
+  },
+  {
+    title: "Sharing a result",
+    body: "If you choose to share a result with someone, the app creates an image of that result on our server so the link works for the person you send it to. Only what you choose to share is included, and it is removed when the link expires or you turn it off. This is the one time content stays on our server, and it happens only when you tap Share.",
   },
   {
     title: "Diagnostics",
